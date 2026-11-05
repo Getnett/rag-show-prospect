@@ -1,5 +1,5 @@
 # ADR-011: Hosting on Oracle Always Free A1 (2 OCPU / 12 GB, arm64)
-- **Status:** Accepted (capacity not yet obtained)
+- **Status:** Superseded by ADR-014 (2026-11-05): Oracle rejected my card at signup
 - **Date:** 2026-11-04
 
 ## Context

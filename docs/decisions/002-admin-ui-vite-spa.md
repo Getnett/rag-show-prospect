@@ -3,7 +3,7 @@
 - **Date:** 2026-11-04
 
 ## Context
-The admin is behind a login and needs no SEO. Full Next.js runs a Node server 24/7 next to the Python API, which creates a second place where login is handled (middleware/SSR) and makes CSP more complex. The free VM has 2 OCPU / 12 GB.
+The admin is behind a login and needs no SEO. Full Next.js runs a Node server 24/7 next to the Python API, which creates a second place where login is handled (middleware/SSR) and makes CSP more complex. The free VM has 2 OCPU / 12 GB. *(Update 2026-11-05: the VM is now 2 GB, see ADR-014, which makes a second Node server even less affordable.)*
 
 ## Options
 1. React + Vite SPA, static files served by Caddy, all auth in FastAPI

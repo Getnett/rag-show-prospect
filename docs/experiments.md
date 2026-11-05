@@ -5,7 +5,7 @@ This log becomes the case study ("before → after").
 
 Conventions:
 - **Golden set:** state the version and size (e.g. `g20-v1`).
-- **Hardware:** `mac` or `vm-a1` (2 OCPU / 12 GB arm64). Latency numbers on different hardware are not comparable.
+- **Hardware:** `mac` or `vm-aws` (AWS t4g.small, 2 vCPU / 2 GB arm64, burstable). Latency numbers on different hardware are not comparable.
 - **Cost:** $ per answer, from provider token counts × the published price on that date.
 
 ## Parsing and OCR (Day 2)

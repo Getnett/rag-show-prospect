@@ -13,5 +13,5 @@ Each item says why it was left out and what it would take. Effort figures are ro
 | Vision-LLM for hard PDF pages | Cost; local OCR first | Implement the provider call behind the existing flag; per-page cost cap |
 | Multilingual support | English only for the MVP | Multilingual embedder/reranker, language detection, translated widget strings, per-language golden set |
 | Visitor thumbs up/down feedback | Not in the brief's MVP | Feedback endpoint plus admin view; feed the eval set |
-| Self-hosted Prometheus/Grafana/Jaeger | Too heavy for a 2-OCPU free VM | Separate monitoring host, or a paid VM |
+| Self-hosted Prometheus/Grafana/Jaeger | Too heavy for a 2 GB free VM | Separate monitoring host, or a paid VM |
 | OpenTelemetry export to other backends | Grafana Cloud + Langfuse cover the demo | Swap the OTLP endpoint (vendor-neutral by design) |

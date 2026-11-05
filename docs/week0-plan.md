@@ -27,7 +27,7 @@ This plan answers CLAUDE.md §11: understanding, top 5 risks, the Week 0 curricu
    - "First signup claims admin" is unsafe on a public URL, so it becomes a **one-time setup link**.
    - The "widget key" can't be a secret, so it becomes a **public site ID** plus separate **secret API keys**.
    - Free LLM tiers that train on data contradict the "secure and private" footer, so **real chats go only to a paid, non-training provider**.
-6. **Scale:** the mockup's numbers (2.42M, 78.6 GB) are illustrative. The README will state the real limits: one ingestion worker on 2 OCPU, with sizes to be measured.
+6. **Scale:** the mockup's numbers (2.42M, 78.6 GB) are illustrative. The README will state the real limits: one ingestion worker on a 2 vCPU / 2 GB server, with sizes to be measured.
 7. **Roadmap, not this build:** prospect trials with their own documents (one private copy per prospect), self-serve multi-tenant SaaS, multiple admins, CSV/XLSX, the vision-LLM call, and self-hosted Prometheus/Grafana.
 
 ## 2. Decisions settled in grilling
@@ -47,7 +47,7 @@ This plan answers CLAUDE.md §11: understanding, top 5 risks, the Week 0 curricu
 | Q13 | Formats: PDF (native and OCR), TXT, MD, HTML, DOCX. CSV/XLSX and the vision-LLM call go on the roadmap; we keep only the interface and flag for the latter |
 | Q14 | Monorepo: `api/ worker/ admin/ widget/ eval/ infra/ docs/ spikes/`. Tooling: uv, ruff, mypy, pytest, SQLAlchemy 2 plus Alembic, GitHub Actions. **Public repo from day 1** with gitleaks scanning |
 | Q15 | Week 0 = Python scripts in `spikes/`, run on your Mac, with results in markdown |
-| Q16 | Oracle Always Free A1 (2 OCPU / 12 GB, arm64). Sign up on Day 1. Fallback: Cloudflare Tunnel from your Mac |
+| Q16 | ~~Oracle Always Free A1~~ (card rejected). **AWS Free plan, t4g.small (2 vCPU / 2 GB, arm64)**, slim setup; see ADR-014. Fallback: Cloudflare Tunnel from your Mac |
 | Q17/Q18 | A subdomain of your own domain. Email via Resend free tier over port 587, behind a `Notifier` interface, plus an HMAC-signed webhook with retries (Discord in the demo) |
 | Q19 | Free tiers in dev with synthetic or your own data only. Real chats go to a paid tier that doesn't train on data. Verified: the **OpenAI API doesn't train on API data by default** and keeps abuse logs ≤30 days. Primary and fallback models are chosen by a Day 5 bake-off |
 | Q20 | Stream text with `[c3]` markers, verify citations after the stream, then send a final "verified" event that can downgrade the band |
@@ -56,7 +56,7 @@ This plan answers CLAUDE.md §11: understanding, top 5 risks, the Week 0 curricu
 | Q23 | Embeddings: **local (fastembed) vs OpenAI `text-embedding-3-small`**, chosen on the numbers. Each index version records model and dimension. Avoid non-commercial models |
 | Q24 | Hard daily and total spend caps. When hit, switch to **sources-only mode** (no LLM call). Never silently fall back to a free tier |
 | Q25 | **OpenTelemetry → Grafana Cloud Free** (logs, metrics, traces, alerts) **plus Langfuse Cloud Hobby** (LLM traces). PII is redacted before export. The admin can turn export off. Postgres still feeds the admin charts |
-| Q26 | Oracle Object Storage (S3 API) for the connector demo and nightly `pg_dump`. A local S3 emulator for tests. Quota is verified on Day 1 |
+| Q26 | AWS S3 for the connector demo and nightly `pg_dump`, with a weekly copy pulled to the Mac. A local S3 emulator for tests |
 | Q27 | Public site ID for the widget. Secret API keys (shown once, stored hashed) for programmatic ingestion |
 
 ## 3. Top 5 risks and mitigations
@@ -64,7 +64,7 @@ This plan answers CLAUDE.md §11: understanding, top 5 risks, the Week 0 curricu
    - **Risk:** 3 build weeks × 6 days × ~3.5 h ≈ 63 h. My estimate is 70–85 h for P0 + P1 + deploy, plus about 6 h for monitoring and the setup token. P2 is not in that estimate. These are estimates, not measurements.
    - **Mitigation:** P2 stays thin or moves to the roadmap. Hard checkpoint at the end of build week 2. Every spike is timeboxed. 🟩 scaffolding is generated fast. Hint ladder after 30 minutes stuck. Scope changes are proposed explicitly, never by quietly lowering quality.
 2. **Free VM availability and performance.**
-   - **Risk:** Oracle A1 capacity may not be available. arm64 builds may break. 2 OCPU may be too slow for OCR plus rerank.
+   - **Risk (updated 2026-11-05):** the AWS t4g.small has only 2 GB RAM and a burstable CPU, and the Free plan ends ~6 months after signup. arm64 builds may break. OCR plus rerank may be too slow or too big.
    - **Mitigation:** sign up on Day 1 and pick the home region carefully. Cloudflare Tunnel as fallback. Benchmark embed, rerank and OCR **on the VM** by Day 7. Multi-arch (arm64) image builds in CI. OCR pages are processed one at a time in a queue.
 3. **Answer quality on messy content** (OCR garbage, tables, conflicting versions) leading to hallucination.
    - **Mitigation:** per-category metrics from Day 2, OCR page routing, citation verification, abstain thresholds tuned on data, and honest table limits. Conflicting versions are tested deliberately.
@@ -80,23 +80,23 @@ Every 🟥 or 🟨 item runs the Loop: brief → predict → build → break →
 
 | Day | Spike | Failure you trigger on purpose | Number we measure |
 |---|---|---|---|
-| **1** 🟩/🟨 Setup and verification | Oracle signup (start the capacity hunt). Verify Object Storage quota, Resend DNS on your subdomain, Grafana and Langfuse accounts. Get free LLM keys plus an OpenAI key with a hard $5 limit. Download Nextcloud v35 and v33 PDFs and crawl about 100 HTML pages. Build 4–5 messy PDFs: phone scan, 2-column, table-heavy, password-protected, oversized | Feed the password-protected and oversized PDFs to a naive parser and watch it fail | Corpus size (pages, tokens), parse failures, $ spent |
+| **1** 🟩/🟨 Setup and verification | AWS Free plan signup (Oracle rejected the card; ADR-014). Create the S3 bucket, Resend DNS on your subdomain, Grafana and Langfuse accounts. Get free LLM keys plus an OpenAI key with a hard $5 limit. Download Nextcloud v35 and v33 PDFs and crawl about 100 HTML pages. Build 4–5 messy PDFs: phone scan, 2-column, table-heavy, password-protected, oversized | Feed the password-protected and oversized PDFs to a naive parser and watch it fail | Corpus size (pages, tokens), parse failures, $ spent |
 | **2** 🟥 Parsing and hybrid OCR | Native extraction (pypdfium2 / pdfplumber) vs Docling. Detect pages that need OCR (chars/page, garbage ratio). Tesseract vs RapidOCR | Run native extraction on a scanned page (empty or garbage); a 2-column page with scrambled reading order; a flattened table | Share of pages correctly routed to OCR, character error rate on 3 hand-typed pages, seconds per page, table cell accuracy on 1 table |
 | **3** 🟥 Golden set v1, chunking and embeddings | **You write 20 golden questions** (direct, multi-chunk, table, scanned, follow-up, unanswerable, out-of-scope, injection) with expected source pages. Compare fixed-512 chunking, heading-aware chunking and the LlamaIndex baseline. bge-small vs one larger local model vs OpenAI `text-embedding-3-small` (I ask before the paid call; under $0.10) | A chunk boundary that splits a numbered step list or table, causing a retrieval miss | recall@5 and MRR@10 per chunker × embedder, embed time per 1k chunks |
 | **4** 🟥 Retrieval | Local Postgres + pgvector. Keyword (FTS) vs vector vs hybrid RRF vs hybrid + rerank (MiniLM-L6 vs bge-reranker-base) | An exact-term query (`occ files:scan`, a config key) where vector search fails; a paraphrase where keyword search fails | recall@5 and MRR for the 4 setups, rerank latency p50/p95 for 20 and 50 passages on CPU |
 | **5** 🟥 Grounded generation, citations and abstain | LLM bake-off on the 20 questions (Gemini free, Groq free, OpenAI nano/mini paid with your OK). Prompt with chunk IDs, inline `[c3]`, and a post-hoc citation check. Plot retrieval scores for answerable vs unanswerable questions to set the 2 thresholds | Ask unanswerable questions before abstain exists; force a citation to an ID that doesn't exist | Faithfulness (your labels), abstention precision/recall, TTFT p50/p95, $ per answer per model |
 | **6** 🟥 Break-it day and eval script | Plant injection text in a document plus a visitor-side injection. Fake a slow or 429 provider. Load v33 and v35 conflicting pages. Consolidate everything into **one command** that runs the 20 questions and prints the metrics table. Optionally cross-check one metric with RAGAS | All of the above | Injection success rate before and after mitigation, behavior under timeout/429, conflict-detection outcome |
-| **7** (light, about 2–3 h) Write-up and go/no-go | If the VM is up, rerun the embed/rerank/OCR benchmarks **on the VM**. Write `docs/week0-findings.md`, the failure-mode journal, draft ADRs, a Week 1 task list with tags, and `PROGRESS.md`. Client drill | — | VM latency vs Mac, go/no-go criteria met or not |
+| **7** (light, about 2–3 h) Write-up and go/no-go | If the VM is up, rerun the embed/rerank/OCR benchmarks **on the VM** and measure **peak RAM of the whole stack** (ingest a large PDF while chatting). Write `docs/week0-findings.md`, the failure-mode journal, draft ADRs, a Week 1 task list with tags, and `PROGRESS.md`. Client drill | — | VM latency vs Mac, go/no-go criteria met or not |
 
 **Go/no-go for build week 1:**
 - Hybrid + rerank beats vector-only recall@5 by a measured margin.
 - Abstain thresholds come from data.
-- The VM, or the tunnel fallback, is confirmed.
+- The VM, or the tunnel fallback, is confirmed, and the stack peaks **under ~1.7 GB RAM** on the t4g.small.
 - The LLM primary and fallback are chosen.
 - Spend so far is ≤ $1.
 
 ## 5. Verified free options (2026-11-04) and what's uncertain
-- **VM.** Verified on Oracle's docs: Oracle A1 is **2 OCPU / 12 GB**, 200 GB block storage, 10 TB egress, home region only. Idle reclaim happens when CPU p95, network and memory are all under 20% for 7 days. A card is required.
+- **VM (superseded 2026-11-05 by ADR-014: AWS t4g.small).** Verified on Oracle's docs: Oracle A1 is **2 OCPU / 12 GB**, 200 GB block storage, 10 TB egress, home region only. Idle reclaim happens when CPU p95, network and memory are all under 20% for 7 days. A card is required.
   - GCP is too small (1 GB egress). AWS is 6 months only. Azure is 12 months only.
   - **Uncertain:** whether capacity is actually available (anecdotal waits of weeks) and whether PAYG is exempt from reclaim.
 - **DNS/HTTPS.** Your own domain works with Caddy and Let's Encrypt. DuckDNS can't host email DNS records. nip.io shares one Let's Encrypt rate limit across all users.
