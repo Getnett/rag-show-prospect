@@ -47,7 +47,7 @@ This plan answers CLAUDE.md §11: understanding, top 5 risks, the Week 0 curricu
 | Q13 | Formats: PDF (native and OCR), TXT, MD, HTML, DOCX. CSV/XLSX and the vision-LLM call go on the roadmap; we keep only the interface and flag for the latter |
 | Q14 | Monorepo: `api/ worker/ admin/ widget/ eval/ infra/ docs/ spikes/`. Tooling: uv, ruff, mypy, pytest, SQLAlchemy 2 plus Alembic, GitHub Actions. **Public repo from day 1** with gitleaks scanning |
 | Q15 | Week 0 = Python scripts in `spikes/`, run on your Mac, with results in markdown |
-| Q16 | ~~Oracle Always Free A1~~ (card rejected). **AWS Free plan, t4g.small (2 vCPU / 2 GB, arm64)**, slim setup; see ADR-014. Fallback: Cloudflare Tunnel from your Mac |
+| Q16 | ~~Oracle Always Free A1~~ (card rejected). **AWS Free plan, EC2 t3.small (2 vCPU / 2 GB, x86)**, slim setup, resized to m7i-flex.large for heavy ingestion; see ADR-014. Fallback: Cloudflare Tunnel from your Mac |
 | Q17/Q18 | A subdomain of your own domain. Email via Resend free tier over port 587, behind a `Notifier` interface, plus an HMAC-signed webhook with retries (Discord in the demo) |
 | Q19 | Free tiers in dev with synthetic or your own data only. Real chats go to a paid tier that doesn't train on data. Verified: the **OpenAI API doesn't train on API data by default** and keeps abuse logs ≤30 days. Primary and fallback models are chosen by a Day 5 bake-off |
 | Q20 | Stream text with `[c3]` markers, verify citations after the stream, then send a final "verified" event that can downgrade the band |
@@ -64,8 +64,8 @@ This plan answers CLAUDE.md §11: understanding, top 5 risks, the Week 0 curricu
    - **Risk:** 3 build weeks × 6 days × ~3.5 h ≈ 63 h. My estimate is 70–85 h for P0 + P1 + deploy, plus about 6 h for monitoring and the setup token. P2 is not in that estimate. These are estimates, not measurements.
    - **Mitigation:** P2 stays thin or moves to the roadmap. Hard checkpoint at the end of build week 2. Every spike is timeboxed. 🟩 scaffolding is generated fast. Hint ladder after 30 minutes stuck. Scope changes are proposed explicitly, never by quietly lowering quality.
 2. **Free VM availability and performance.**
-   - **Risk (updated 2026-11-05):** the AWS t4g.small has only 2 GB RAM and a burstable CPU, and the Free plan ends ~6 months after signup. arm64 builds may break. OCR plus rerank may be too slow or too big.
-   - **Mitigation:** sign up on Day 1 and pick the home region carefully. Cloudflare Tunnel as fallback. Benchmark embed, rerank and OCR **on the VM** by Day 7. Multi-arch (arm64) image builds in CI. OCR pages are processed one at a time in a queue.
+   - **Risk (updated 2026-11-05):** the AWS t3.small has only 2 GB RAM and a burstable CPU, and the Free plan ends ~6 months after signup. Images must be built for x86 (my Mac is arm64). OCR plus rerank may be too slow or too big.
+   - **Mitigation:** sign up on Day 1 and pick the home region carefully. Cloudflare Tunnel as fallback. Benchmark embed, rerank and OCR **on the VM** by Day 7. `linux/amd64` image builds in CI. OCR pages are processed one at a time in a queue.
 3. **Answer quality on messy content** (OCR garbage, tables, conflicting versions) leading to hallucination.
    - **Mitigation:** per-category metrics from Day 2, OCR page routing, citation verification, abstain thresholds tuned on data, and honest table limits. Conflicting versions are tested deliberately.
 4. **LLM limits, cost and churn.**
@@ -91,12 +91,12 @@ Every 🟥 or 🟨 item runs the Loop: brief → predict → build → break →
 **Go/no-go for build week 1:**
 - Hybrid + rerank beats vector-only recall@5 by a measured margin.
 - Abstain thresholds come from data.
-- The VM, or the tunnel fallback, is confirmed, and the stack peaks **under ~1.7 GB RAM** on the t4g.small.
+- The VM, or the tunnel fallback, is confirmed, and the stack peaks **under ~1.7 GB RAM** while serving on the t3.small (heavy ingestion may use the resize).
 - The LLM primary and fallback are chosen.
 - Spend so far is ≤ $1.
 
 ## 5. Verified free options (2026-11-04) and what's uncertain
-- **VM (superseded 2026-11-05 by ADR-014: AWS t4g.small).** Verified on Oracle's docs: Oracle A1 is **2 OCPU / 12 GB**, 200 GB block storage, 10 TB egress, home region only. Idle reclaim happens when CPU p95, network and memory are all under 20% for 7 days. A card is required.
+- **VM (superseded 2026-11-05 by ADR-014: AWS t3.small).** Verified on Oracle's docs: Oracle A1 is **2 OCPU / 12 GB**, 200 GB block storage, 10 TB egress, home region only. Idle reclaim happens when CPU p95, network and memory are all under 20% for 7 days. A card is required.
   - GCP is too small (1 GB egress). AWS is 6 months only. Azure is 12 months only.
   - **Uncertain:** whether capacity is actually available (anecdotal waits of weeks) and whether PAYG is exempt from reclaim.
 - **DNS/HTTPS.** Your own domain works with Caddy and Let's Encrypt. DuckDNS can't host email DNS records. nip.io shares one Let's Encrypt rate limit across all users.

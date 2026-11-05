@@ -24,7 +24,7 @@ Seeded from CLAUDE.md §6E on 2026-11-04. Detection and mitigation are **plans**
 | F15 | Widget offline / API down | Blank widget or endless typing dots | Health check from the loader; request timeout | Friendly offline state with email fallback; launcher still renders | — | planned |
 | F16 | Admin-claim race (added) | A stranger or a second request becomes admin | Concurrent-claim test | One-time setup token, claimed atomically in one transaction | — | planned |
 | F17 | Free-tier training on chats (added) | Visitor data sent to a provider that trains on it | Config check: real-chat provider must be on an allowlist of non-training providers | Paid, non-training provider for real chats; free tiers only in dev | — | planned |
-| F18 | Out of memory on the 2 GB VM (added 2026-11-05) | Containers killed (OOMKilled), 502s from Caddy, ingestion jobs restart in a loop | `docker inspect` OOMKilled flag, container restart count, host memory/swap metrics and alerts | Per-service `mem_limit`, 4 GB swap, one worker, OCR one page at a time, models loaded once; job lease expiry re-queues the killed job | Day 7: ingest a large PDF while chatting, record peak RSS | planned |
+| F18 | Out of memory on the 2 GB VM (added 2026-11-05) | Containers killed (OOMKilled), 502s from Caddy, ingestion jobs restart in a loop | `docker inspect` OOMKilled flag, container restart count, host memory/swap metrics and alerts | Per-service `mem_limit`, 4 GB swap, one worker, OCR one page at a time, models loaded once; job lease expiry re-queues the killed job; resize to m7i-flex.large for big imports | Day 7: ingest a large PDF while chatting, record peak RSS | planned |
 
 ## Drill log
 Record each deliberate trigger: date, what we did, what we saw, what changed.
