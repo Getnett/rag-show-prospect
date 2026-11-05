@@ -2,6 +2,7 @@
 
 Budget: **$5–10 total paid credit**, for final eval runs and demos only. Every paid call is approved first and logged here.
 Guardrails: a hard usage limit is set in the provider dashboard **and** the in-app daily/total cap.
+- 2026-11-05: OpenAI dashboard hard limit set to **$5** (done by me; not visible to the assistant).
 
 | Date | Provider | Model | Purpose | Calls | Input tok | Output tok | Cost ($) | Running total ($) | Approved by |
 |---|---|---|---|---|---|---|---|---|---|

@@ -26,9 +26,13 @@ Seeded from CLAUDE.md §6E on 2026-11-04. Detection and mitigation are **plans**
 | F17 | Free-tier training on chats (added) | Visitor data sent to a provider that trains on it | Config check: real-chat provider must be on an allowlist of non-training providers | Paid, non-training provider for real chats; free tiers only in dev | — | planned |
 | F18 | Out of memory on the 2 GB VM (added 2026-11-05) | Containers killed (OOMKilled), 502s from Caddy, ingestion jobs restart in a loop | `docker inspect` OOMKilled flag, container restart count, host memory/swap metrics and alerts | Per-service `mem_limit`, 4 GB swap, one worker, OCR one page at a time, models loaded once; job lease expiry re-queues the killed job; resize to m7i-flex.large for big imports | Day 7: ingest a large PDF while chatting, record peak RSS | planned |
 | F19 | Demo address unreachable (added 2026-11-05) | Prospect's link times out or shows a certificate error | External uptime check on the public URL; DuckDNS updater exit code logged on boot; Caddy certificate errors in logs | Updater runs before Caddy on boot; Caddy keeps certs on a persistent volume; fallback A record on my Vercel domain (~10 min) | Stop/start the instance and confirm the name follows the new IP and HTTPS still works | planned |
+| F20 | Extractor drops word spaces (added 2026-11-05, found on Day 1) | Native text is "Listmessagesinatalkconversation": keyword search misses, embeddings degrade, on a *clean* PDF | Per-page glued-token share (letters-only tokens ≥ 25 chars) above a threshold | Use pypdfium2 for native text (0% glued vs 4.4% with pypdf); flag pages above the threshold | `spikes/naive_parse.py` glued % column; Day 2 per-page check | planned |
 
 ## Drill log
 Record each deliberate trigger: date, what we did, what we saw, what changed.
 
 | Date | Failure | What we did | What we observed | Change made |
 |---|---|---|---|---|
+| 2026-11-05 | F06, F03 | Fed password, owner-only, 2,050-page/116 MB and image-only PDFs to naive pypdf | Password → loud error; owner-only → opens fine; oversized → no hang on the Mac, 284 MB RSS, 2.2 s; scan → **empty text, no error** | Day 2: route near-empty pages to OCR; empty after OCR = Failed with a reason; size and page caps before parsing |
+| 2026-11-05 | F20 | Measured pypdf vs pypdfium2 on the clean v35 User manual | pypdf glued words on 113/333 pages; pypdfium2 0% glued | Native extraction = pypdfium2; F20 added |
+| 2026-11-05 | F05, F13 | Crawled 100 pages of `/server/stable/` | `.../en/` and `.../en/index.html` are the same page under two URLs (100 fetches → 99 files) | Crawler must normalize `/` ↔ `/index.html` and dedupe on content hash |
