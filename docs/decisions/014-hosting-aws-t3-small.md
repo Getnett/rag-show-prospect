@@ -39,7 +39,7 @@ Memory plan for 2 GB:
 - Postgres tuned small (`shared_buffers` ≈ 256 MB).
 - t3 credit specification set to **standard** (AWS defaults t3 to unlimited), so a CPU spike slows down instead of spending credits.
 
-Resize for heavy work: stop the instance → change the type to m7i-flex.large → start → ingest → switch back. Both types are x86, so the same disk boots on either. That costs roughly $0.10 per hour while resized. An **Elastic IP** keeps the public address, and therefore DNS, stable across stop/start.
+Resize for heavy work: stop the instance → change the type to m7i-flex.large → start → ingest → switch back. Both types are x86, so the same disk boots on either. That costs roughly $0.10 per hour while resized. ~~An **Elastic IP** keeps the public address, and therefore DNS, stable across stop/start.~~ *Amended by ADR-015:* no Elastic IP. A DuckDNS updater on boot points the name at the new IP.
 
 Storage and backups: an S3 bucket in the same account for the connector demo and nightly `pg_dump`. A weekly copy of the dump is pulled to my Mac, because an expired account takes its buckets with it.
 
@@ -49,7 +49,7 @@ Storage and backups: an S3 bucket in the same account for the connector demo and
 - Credit specification: **standard**.
 - Security group: SSH (22) only, from my IP. Ports 80/443 open on deploy day.
 - Key pair stored outside the repo. Termination protection on.
-- No Elastic IP yet: an unattached Elastic IP is billed hourly, so it's created on Day 7.
+- No Elastic IP: an unattached Elastic IP is billed hourly, and ADR-015 replaces it with DuckDNS.
 
 ## Trade-offs and consequences
 - **Hard expiry.** The demo can live until about May 2027 (6 months from signup); ~$16.50 × 6 ≈ $99 fits even the base $100 credit. Then I migrate: `docker compose up` on the new host plus a restore from backup. That doubles as our tested-restore drill.

@@ -14,12 +14,15 @@
 - **Spend:** $0.00
 
 ## 2026-11-05 (Week 0, Day 1: setup)
-- **Hours:** _fill in_
+- **Hours:** 2.5 (so far; ~1.5 left today)
 - **Done:**
+  - Repo pushed to github.com/Getnett/rag-show-prospect (public).
+  - Day 1 predict answered: garbage output ranked most dangerous (it misleads users); failures should say "can't process this". Critique: right on garbage; per-file predictions missing; silent empty is #2 (my ranking: garbage > silent empty > hang > crash).
+  - Public address decided: free DuckDNS name + Caddy HTTPS, no Elastic IP; demo email via Resend's sandbox sender (ADR-015). Vercel domain untouched.
   - Oracle signup failed (virtual card rejected). Switched hosting to the AWS Free plan, EC2 t3.small (2 GB, x86), resized to m7i-flex.large for heavy ingestion: ADR-014.
   - AWS account created; the Free plan offers t3.small, c7i-flex.large and m7i-flex.large (t4g.small turned out not to be allowed).
-  - EC2 t3.small instance created and left stopped until Day 7. Checklist done: Ubuntu amd64, disk enlarged, credit mode standard, SSH-only firewall, key outside the repo, termination protection on, no Elastic IP yet.
-- **Next:** rest of Day 1 (accounts, corpus download, messy PDFs, predict question).
+  - EC2 t3.small instance created and left stopped until Day 7. Checklist done: Ubuntu amd64, disk enlarged, credit mode standard, SSH-only firewall, key outside the repo, termination protection on, no Elastic IP (DuckDNS instead, ADR-015).
+- **Next:** rest of Day 1: OpenAI key with a hard $5 limit, Gemini + Groq dev keys, DuckDNS name, Resend, Grafana + Langfuse accounts, phone-scan one page; I build the corpus download script and messy test PDFs.
 - **Blockers:** none.
 - **Risks:** 2 GB RAM (Day 7 go/no-go: peak < ~1.7 GB); AWS Free plan ends ~May 2027 (6 months from signup).
 - **Spend:** $0.00 (AWS usage comes from free credits only)

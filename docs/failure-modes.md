@@ -25,6 +25,7 @@ Seeded from CLAUDE.md §6E on 2026-11-04. Detection and mitigation are **plans**
 | F16 | Admin-claim race (added) | A stranger or a second request becomes admin | Concurrent-claim test | One-time setup token, claimed atomically in one transaction | — | planned |
 | F17 | Free-tier training on chats (added) | Visitor data sent to a provider that trains on it | Config check: real-chat provider must be on an allowlist of non-training providers | Paid, non-training provider for real chats; free tiers only in dev | — | planned |
 | F18 | Out of memory on the 2 GB VM (added 2026-11-05) | Containers killed (OOMKilled), 502s from Caddy, ingestion jobs restart in a loop | `docker inspect` OOMKilled flag, container restart count, host memory/swap metrics and alerts | Per-service `mem_limit`, 4 GB swap, one worker, OCR one page at a time, models loaded once; job lease expiry re-queues the killed job; resize to m7i-flex.large for big imports | Day 7: ingest a large PDF while chatting, record peak RSS | planned |
+| F19 | Demo address unreachable (added 2026-11-05) | Prospect's link times out or shows a certificate error | External uptime check on the public URL; DuckDNS updater exit code logged on boot; Caddy certificate errors in logs | Updater runs before Caddy on boot; Caddy keeps certs on a persistent volume; fallback A record on my Vercel domain (~10 min) | Stop/start the instance and confirm the name follows the new IP and HTTPS still works | planned |
 
 ## Drill log
 Record each deliberate trigger: date, what we did, what we saw, what changed.
