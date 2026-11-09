@@ -21,3 +21,6 @@ pdfplumber is slower than PyMuPDF, and layout and tables need more of my own log
 
 ## How I'd explain it to a client
 "Every library is commercially safe to hand over; nothing forces you to open-source your product."
+
+## Addendum (2026-11-06): screenshot-heavy pages are not OCR'd
+About 90 of the 333 v35 User-manual pages are mostly UI screenshots with a short caption. Decision: keep their native text only. OCR on screenshots adds ~1.7 s/page (Mac) and indexes menu-label noise. Trade-off: words that appear only inside a screenshot can't be found. Revisit with retrieval numbers (Day 3+) or the vision-LLM option on the roadmap.

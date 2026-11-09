@@ -1,0 +1,354 @@
+[
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 26,
+    "expected": "native",
+    "category": "body",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 29,
+    "expected": "native",
+    "category": "body",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 40,
+    "expected": "native",
+    "category": "body",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 51,
+    "expected": "native",
+    "category": "body",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 164,
+    "expected": "native",
+    "category": "body",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 175,
+    "expected": "native",
+    "category": "body",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 271,
+    "expected": "native",
+    "category": "body",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 308,
+    "expected": "native",
+    "category": "body",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 20,
+    "expected": "native",
+    "category": "screenshot",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 36,
+    "expected": "native",
+    "category": "screenshot",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 57,
+    "expected": "native",
+    "category": "screenshot",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 120,
+    "expected": "native",
+    "category": "screenshot",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 123,
+    "expected": "native",
+    "category": "screenshot",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 328,
+    "expected": "native",
+    "category": "screenshot",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 5,
+    "expected": "native",
+    "category": "sparse",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 15,
+    "expected": "native",
+    "category": "sparse",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 273,
+    "expected": "native",
+    "category": "sparse",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 302,
+    "expected": "native",
+    "category": "sparse",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_user_manual.pdf",
+    "page": 1,
+    "expected": "native",
+    "category": "blank",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_admin_manual.pdf",
+    "page": 64,
+    "expected": "native",
+    "category": "body",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_admin_manual.pdf",
+    "page": 74,
+    "expected": "native",
+    "category": "body",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_admin_manual.pdf",
+    "page": 77,
+    "expected": "native",
+    "category": "body",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_admin_manual.pdf",
+    "page": 143,
+    "expected": "native",
+    "category": "body",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_admin_manual.pdf",
+    "page": 261,
+    "expected": "native",
+    "category": "body",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_admin_manual.pdf",
+    "page": 485,
+    "expected": "native",
+    "category": "body",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_admin_manual.pdf",
+    "page": 60,
+    "expected": "native",
+    "category": "screenshot",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_admin_manual.pdf",
+    "page": 377,
+    "expected": "native",
+    "category": "screenshot",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_admin_manual.pdf",
+    "page": 249,
+    "expected": "native",
+    "category": "sparse",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_admin_manual.pdf",
+    "page": 689,
+    "expected": "native",
+    "category": "sparse",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_admin_manual.pdf",
+    "page": 1,
+    "expected": "native",
+    "category": "blank",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/raw/pdf/v35_admin_manual.pdf",
+    "page": 7,
+    "expected": "native",
+    "category": "blank",
+    "truth": null,
+    "note": ""
+  },
+  {
+    "file": "data/messy/synthetic_scan.pdf",
+    "page": 0,
+    "expected": "ocr",
+    "category": "scan-synthetic",
+    "truth": "data/messy/truth/synthetic_scan.txt",
+    "note": "Day 1 fixture"
+  },
+  {
+    "file": "data/messy/scanned-nextcloud-user-manual.pdf",
+    "page": 0,
+    "expected": "ocr",
+    "category": "scan-real",
+    "truth": "data/messy/truth/scanned-nextcloud-user-manual.txt",
+    "note": "Day 1 fixture"
+  },
+  {
+    "file": "data/messy/two_column.pdf",
+    "page": 0,
+    "expected": "native",
+    "category": "two-column",
+    "truth": null,
+    "note": "Day 1 fixture"
+  },
+  {
+    "file": "data/messy/two_column.pdf",
+    "page": 1,
+    "expected": "native",
+    "category": "two-column",
+    "truth": null,
+    "note": "Day 1 fixture"
+  },
+  {
+    "file": "data/messy/table_heavy.pdf",
+    "page": 0,
+    "expected": "native",
+    "category": "table",
+    "truth": null,
+    "note": "Day 1 fixture"
+  },
+  {
+    "file": "data/messy/scan_set.pdf",
+    "page": 0,
+    "expected": "ocr",
+    "category": "scan-light",
+    "truth": "data/messy/truth/scan_set_p1.txt",
+    "note": "v35 user manual page index 165"
+  },
+  {
+    "file": "data/messy/scan_set.pdf",
+    "page": 1,
+    "expected": "ocr",
+    "category": "scan-light",
+    "truth": "data/messy/truth/scan_set_p2.txt",
+    "note": "v35 user manual page index 54"
+  },
+  {
+    "file": "data/messy/scan_set.pdf",
+    "page": 2,
+    "expected": "ocr",
+    "category": "scan-medium",
+    "truth": "data/messy/truth/scan_set_p3.txt",
+    "note": "v35 user manual page index 280"
+  },
+  {
+    "file": "data/messy/scan_set.pdf",
+    "page": 3,
+    "expected": "ocr",
+    "category": "scan-medium",
+    "truth": "data/messy/truth/scan_set_p4.txt",
+    "note": "v35 user manual page index 48"
+  },
+  {
+    "file": "data/messy/scan_set.pdf",
+    "page": 4,
+    "expected": "ocr",
+    "category": "scan-heavy",
+    "truth": "data/messy/truth/scan_set_p5.txt",
+    "note": "v35 user manual page index 49"
+  },
+  {
+    "file": "data/messy/scan_set.pdf",
+    "page": 5,
+    "expected": "ocr",
+    "category": "scan-heavy",
+    "truth": "data/messy/truth/scan_set_p6.txt",
+    "note": "v35 user manual page index 306"
+  },
+  {
+    "file": "data/messy/scan_with_text_header.pdf",
+    "page": 0,
+    "expected": "ocr",
+    "category": "scan+text-header",
+    "truth": "data/messy/truth/scanned-nextcloud-user-manual.txt",
+    "note": "typed header/footer as real text, body is an image"
+  },
+  {
+    "file": "data/messy/scan_with_bad_text_layer.pdf",
+    "page": 0,
+    "expected": "ocr",
+    "category": "scan+bad-text-layer",
+    "truth": "data/messy/truth/scanned-nextcloud-user-manual.txt",
+    "note": "invisible OCR layer with ~20% confusable errors"
+  }
+]
