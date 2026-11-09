@@ -37,8 +37,30 @@ pypdf vs pypdfium2 on the v35 User manual body pages (20–333): word-like token
 Also found: plain `pip install pypdf` can't open AES-encrypted PDFs at all (`DependencyError`); it needs `pypdf[crypto]`.
 
 ## Parsing and OCR (Day 2)
+Labelled set `spikes/day2_route_set.json`: 44 pages, 34 native (body, screenshot-heavy, sparse, blank, two-column, table) and 10 needing OCR (real scan, synthetic scans light/medium/heavy, scan + typed header, scan + bad hidden OCR layer). Harness: `spikes/parse_compare.py`. OCR = Tesseract 5.5.4 CLI, eng, 300 dpi, no preprocessing.
+
 | Date | Config | Hardware | Pages routed to OCR correctly | CER (3 pages) | s/page | Table cell accuracy | Notes |
 |---|---|---|---|---|---|---|---|
+| 2026-11-06 | **Baseline:** OCR if < 50 non-space chars | mac | 39/44; **2 scans missed** (typed header, bad hidden layer), 3 blank pages OCR'd needlessly | real scan **0.008**; light synthetic 0.12; medium synthetic 0.52–0.62 | median 1.7, max 4.2 (OCR pages) | 100% (pypdfium2 lines) / 100% (pdfplumber) | Heavy synthetic scans: CER ≈ 1.0 (5 chars out). Table fixture too easy to tell the extractors apart |
+| 2026-11-09 | My v1: OCR if image covers > 90% of the page; text_quality placeholder | mac | **44/44**, 0 missed, 0 needless | (same OCR) | median 1.5 | (same) | Routing right. text_quality bugs (empty scored 1.0, digit check on the whole page, one +1 outside the loop) failed 39/44 pages incl. all clean ones; heavy scan scored 1.0 |
+| 2026-11-09 | **Reference (ADR-016):** composition routing + token quality gate + page status | mac | **44/44**, 0 missed, 0 needless | real 0.008; light 0.12; medium 0.52–0.62 → **Failed** | median 1.5, max 3.7 | (same) | Failed = exactly the 5 pages with CER ≥ 0.5; 0 clean pages failed; 3 blank pages skipped. Margin thin: worst readable 0.65 vs best unreadable 0.46 (tuned on these 10 pages) |
+
+Threshold sweep for the baseline rule (routing only), showing the trade-off measured:
+
+| N (OCR if < N chars) | Correct | Missed scans | Needless OCR |
+|---|---|---|---|
+| 20 | 39/44 | 2 | 3 |
+| 50 | 39/44 | 2 | 3 |
+| 100 | 27/44 | 2 | 15 |
+| 300 | 26/44 | 1 | 17 |
+| 1000 | 25/44 | 1 | 18 |
+| 2000 | 14/44 | 0 | 30 |
+
+Quality signals vs CER on the 10 pages with ground truth (Tesseract output): noise-fragment share is the best separator. Readable pages (CER ≤ 0.12) have ≤ 14% noise; unreadable pages (CER ≥ 0.52) have ≥ 21%. Common-word share overlaps more (0.22 unreadable vs 0.27 readable), so noise is weighted 1.5× and the common-word damping only starts below 5% (the table page has 6%).
+
+Break-it on synthetic pages (reference routing): brochure with a full-page background + real text → native (my v1: OCR, which would throw away good text); scan + hidden OCR layer → OCR; scan + visible glued layer → OCR (quality 0.0); full-page screenshot → OCR.
+
+Checked: the high CER on synthetic scans is real OCR failure, not reading order (word recall 0.29 on `synthetic_scan.pdf`, 0.17 on a medium page, 0.91 on a light page). The salt-and-pepper noise is harsher than a real phone scan.
 
 ## Chunking × embeddings (Day 3)
 | Date | Chunker | Embedder | Golden set | recall@5 | MRR@10 | Embed s / 1k chunks | Cost | Notes |

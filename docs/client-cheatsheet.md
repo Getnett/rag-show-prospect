@@ -20,3 +20,24 @@ Evidence to point at:
 - Day 1: the naive parser glued words together on **113 of 333 pages** of a *clean* manual; our chosen extractor had 0% (experiments.md).
 
 Traps to avoid: don't say "OCR fixes it". OCR can produce garbage too (F03), and that's why there's a quality check *after* OCR.
+
+### "Why don't you just run OCR on every page, to be safe?"
+*Drill 2026-11-09. Status: **measured** in Day 2 (`docs/experiments.md`).*
+
+My first answer: "OCR doesn't create reliable output; it can add unintended things, so even normal text gets read incorrectly." The core point is right; it lacked numbers and the time cost.
+
+> "Because OCR is a guess, and the text inside a normal PDF is exact. On our tests, even a good scan came back about 99% right and a slightly damaged one about 88%, while the PDF's own text is 100%. So OCR'ing everything would make clean pages *worse*. It's also slow: about 1.5 seconds a page on a laptop, so a 300-page manual goes from seconds to about 8 minutes, and longer on a small server. So we OCR only the pages that are photos of text, and we check the readability of every page either way."
+
+Why it works:
+- **Quality:** OCR makes exact text worse.
+- **Cost:** time per page, scaled to a real document.
+- **What we do instead:** route only the pages that need it, and verify every page.
+
+Evidence to point at:
+- CER 0.008 on the real scan and 0.12 on light synthetic scans, vs exact native text.
+- Median 1.5 s/page for OCR (Mac).
+- Routing: 44/44, 0 needless OCR (ADR-016).
+
+Traps to avoid:
+- Don't say "OCR is unreliable" in general. It's very good on a clean scan, which is why we use it for scans.
+- Don't promise speed numbers for the server until Day 7 measures them on the VM.

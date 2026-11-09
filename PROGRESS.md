@@ -32,3 +32,17 @@
 - **Blockers:** none.
 - **Risks:** 2 GB RAM (Day 7 go/no-go: peak < ~1.7 GB); AWS Free plan ends ~May 2027 (6 months from signup).
 - **Spend:** $0.00 (AWS usage comes from free credits only)
+
+## 2026-11-06 → 2026-11-09 (Week 0, Day 2: parsing and hybrid OCR)
+- **Hours:** 4
+- **Done:**
+  - Predict: I said the char-count rule OCRs pages that don't need it (blank pages). Right; missed the more dangerous direction: scans with a typed header or a hidden OCR layer get skipped.
+  - Labelled set of 44 pages (`spikes/make_route_set.py`) and harness (`spikes/parse_compare.py`). Baseline: 39/44, 2 scans silently missed, 3 blank pages OCR'd; no N fixes both (sweep).
+  - My v1: routing on image coverage > 90% → 44/44. My text_quality had bugs and failed clean pages; I asked for the solution after trying.
+  - Reference solution + explanation (ADR-016): 44/44 routing, unreadable OCR pages (CER ≥ 0.5) fail with reasons, blank pages skipped, brochure case kept native. F03 tested, F21 added.
+  - Decision: screenshot-heavy pages are not OCR'd (ADR-006 addendum).
+  - Drill 2 ("why not OCR every page?"): right core point (OCR adds errors to text that was exact); missed time cost and numbers. Improved answer in `docs/client-cheatsheet.md`.
+- **Next:** re-implement `text_quality` from memory as a check of understanding (optional, ~30 min); Day 3 (golden set v1, chunking × embeddings).
+- **Blockers:** none.
+- **Risks:** quality thresholds tuned on 10 pages (thin margin 0.65 vs 0.46); table fixture too easy. Timeline: no fixed end date (my call, 2026-11-09); the only hard date is the AWS Free plan expiry (~May 2027).
+- **Spend:** $0.00
