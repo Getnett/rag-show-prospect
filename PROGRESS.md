@@ -46,3 +46,18 @@
 - **Blockers:** none.
 - **Risks:** quality thresholds tuned on 10 pages (thin margin 0.65 vs 0.46); table fixture too easy. Timeline: no fixed end date (my call, 2026-11-09); the only hard date is the AWS Free plan expiry (~May 2027).
 - **Spend:** $0.00
+
+## 2026-11-11 → 2026-11-17 (Week 0, Day 3: golden set v1, chunking × embeddings)
+- **Hours:** ~8
+- **Done:**
+  - Golden set v1: 20 questions written and verified by me (`eval/golden/g20-v1.yaml`), with tools to find pages (`spikes/find_page.py`) and validate quotes (`spikes/check_golden.py`). Review fixed answers that claimed more than their sources (q07, q11, q12, q13).
+  - Found F22 through the checker: PDFs hide a line-break hyphen (U+FFFE / U+0002) inside words; stripped at extraction.
+  - Predict: I answered about the LLM; the retrieval answer is that follow-ups fail because "it" has nothing to search for. Confirmed: q19 missed by every setup.
+  - Harness (`spikes/retrieval_eval.py`), scoring by evidence text. Baselines fixed_512 and LlamaIndex default; heading_aware written together after my draft (timeboxed).
+  - Results: bge-base = bge-small recall at 3× the time; bge cuts 74–90% of baseline chunks at 512 tokens (F24); OpenAI 3-small is the only change that raised recall (fixed_512 0.71, heading_aware 0.57 = 2 questions of 14).
+  - Decision: heading_aware + OpenAI for Day 4, with a written switch rule (ADR-017). F23 and F24 added.
+  - Drill 3 ("why pick the lower score?"): good on sample size and citations; missed the number, the switch rule, and claimed unmeasured hallucination. Model answer in `docs/client-cheatsheet.md`.
+- **Next:** Day 4 (Postgres + pgvector, keyword vs vector vs hybrid vs rerank; neighbour expansion for multi_chunk).
+- **Blockers:** none.
+- **Risks:** 14 scored questions (one = 0.07): conclusions re-checked on 60. Unanswerables score like answerables on similarity alone (q14), so Day 5 needs more than a threshold. Scanned questions use the truth text, not OCR output (no OCR-in-the-loop until build week 1).
+- **Spend:** ~$0.03 (OpenAI embeddings, approved; ledger updated). Total ~$0.03.
